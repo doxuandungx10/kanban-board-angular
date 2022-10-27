@@ -3,102 +3,138 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Board } from 'src/app/models/board.model';
 import { IBoard } from 'src/app/models/board.model';
 import { Column } from 'src/app/models/column.model';
+import { WorkspaceService } from '../service/workspace.service';
+import { WorkSpace } from '../models/workspace.interface';
 
 @Component({
   selector: 'app-main-view',
   templateUrl: './main-view.component.html',
-  styleUrls: ['./main-view.component.scss']
+  styleUrls: ['./main-view.component.scss'],
+  providers: [WorkspaceService],
 })
 export class MainViewComponent implements OnInit {
   isEditing: boolean = false;
   curTaskId: number = 0;
-  constructor() { }
+  lstWorkSpace: any[] = [];
+
+
+  constructor(private workspaceService: WorkspaceService) {}
 
   board: Board = new Board('Test Board', [
     new Column('Ideas', [
-      "Some random idea",
-      "This is another random idea",
-      "build an awesome application"
+      'Some random idea',
+      'This is another random idea',
+      'build an awesome application',
     ]),
     new Column('Research', [
-      "Lorem ipsum",
-      "foo",
-      "This was in the 'Research' column"
+      'Lorem ipsum',
+      'foo',
+      "This was in the 'Research' column",
     ]),
     new Column('Todo', [
       'Get to work',
       'Pick up groceries',
       'Go home',
-      'Fall asleep'
+      'Fall asleep',
     ]),
     new Column('Done', [
       'Get up',
       'Brush teeth',
       'Take a shower',
       'Check e-mail',
-      'Walk dog'
-    ])
+      'Walk dog',
+    ]),
   ]);
 
   board2: IBoard = {
-    name: "Test Board",
+    name: 'Test Board',
     columns: [
       {
-      name: "Ideas",
-      tasks: [
-        {
-          id: 1,
-          name: "Some random idea"
-        },
-        {
-          id: 2,
-          name: "This is another random idea"
-        },
-        {
-          id: 3,
-          name: "build an awesome application"
-        }
-      ]},
+        name: 'Ideas',
+        tasks: [
+          {
+            id: 1,
+            name: 'Some random idea',
+          },
+          {
+            id: 2,
+            name: 'This is another random idea',
+          },
+          {
+            id: 3,
+            name: 'build an awesome application',
+          },
+        ],
+      },
       {
-      name: "Research",
-      tasks: [
-        {
-          id: 4,
-          name: "Lorem ipsum"
-        },
-        {
-          id: 5,
-          name: "foo"
-        },
-        {
-          id: 6,
-          name: "This was in the 'Research' column"
-        }]
-      }
-    ]
-  }
+        name: 'Research',
+        tasks: [
+          {
+            id: 4,
+            name: 'Lorem ipsum',
+          },
+          {
+            id: 5,
+            name: 'foo',
+          },
+          {
+            id: 6,
+            name: "This was in the 'Research' column",
+          },
+        ],
+      },
+    ],
+  };
 
   ngOnInit() {
+    this.getAllWorkspace();
+  }
+
+  getAllWorkspace() {
+    const payload = {
+      skip: 0,
+      limit: 5,
+      orderBy: 'name',
+    };
+    this.workspaceService.getAllWorkSpace(payload).subscribe(
+      (res) => {
+        if (res !== null) {
+          this.lstWorkSpace = res;
+          console.log('lstWorkSpace', this.lstWorkSpace);
+        }
+      },
+      (error) => {}
+    );
   }
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(event.previousContainer.data,
+      moveItemInArray(
         event.container.data,
         event.previousIndex,
-        event.currentIndex);
+        event.currentIndex
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     }
   }
 
   method(data: any) {
     if (this.curTaskId == 0) {
-      this.curTaskId = data.id
+      this.curTaskId = data.id;
     } else {
-      this.curTaskId = 0
+      this.curTaskId = 0;
     }
     this.isEditing = !this.isEditing;
-    console.log("abc");
+    console.log('abc');
+  }
+
+  showModalUpdate(data) {
+    console.log(data);
   }
 }

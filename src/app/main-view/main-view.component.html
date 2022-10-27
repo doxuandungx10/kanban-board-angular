@@ -26,7 +26,9 @@
             <div class="task" *ngFor="let task of item.tasks" cdkDrag (dblclick)="method(task)">
               <input *ngIf="isEditing && curTaskId == task.id" type="text" [value]="task.name">
               {{ task.name }}
-              <i class="fa-regular fa-pen-to-square"></i>
+              <button class="btn-edit" nz-button nzType="default" (click)="showModalUpdate(task)">
+                <span nz-icon nzType="edit" nzTheme="outline"></span>
+              </button>
             </div>
           </div>
         </div>
