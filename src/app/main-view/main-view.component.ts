@@ -4,21 +4,24 @@ import { Board } from 'src/app/models/board.model';
 import { IBoard } from 'src/app/models/board.model';
 import { Column } from 'src/app/models/column.model';
 import { WorkspaceService } from '../service/workspace.service';
-import { WorkSpace } from '../models/workspace.interface';
+import { TicketService } from '../service/ticket.service';
 
 @Component({
   selector: 'app-main-view',
   templateUrl: './main-view.component.html',
   styleUrls: ['./main-view.component.scss'],
-  providers: [WorkspaceService],
+  providers: [WorkspaceService, TicketService],
 })
 export class MainViewComponent implements OnInit {
   isEditing: boolean = false;
   curTaskId: number = 0;
   lstWorkSpace: any[] = [];
+  isVisibleDetail: boolean = false;
 
-
-  constructor(private workspaceService: WorkspaceService) {}
+  constructor(
+    private workspaceService: WorkspaceService,
+    private ticketService: TicketService
+  ) {}
 
   board: Board = new Board('Test Board', [
     new Column('Ideas', [
@@ -91,12 +94,7 @@ export class MainViewComponent implements OnInit {
   }
 
   getAllWorkspace() {
-    const payload = {
-      skip: 0,
-      limit: 5,
-      orderBy: 'name',
-    };
-    this.workspaceService.getAllWorkSpace(payload).subscribe(
+    this.ticketService.getAllTicket().subscribe(
       (res) => {
         if (res !== null) {
           this.lstWorkSpace = res;
@@ -124,17 +122,27 @@ export class MainViewComponent implements OnInit {
     }
   }
 
-  method(data: any) {
-    if (this.curTaskId == 0) {
-      this.curTaskId = data.id;
-    } else {
-      this.curTaskId = 0;
-    }
-    this.isEditing = !this.isEditing;
-    console.log('abc');
+  // method(data: any) {
+  //   if (this.curTaskId == 0) {
+  //     this.curTaskId = data.id;
+  //   } else {
+  //     this.curTaskId = 0;
+  //   }
+  //   this.isEditing = !this.isEditing;
+  //   console.log('abc');
+  // }
+
+  showModalUpdate() {
+    this.isVisibleDetail = true;
   }
 
-  showModalUpdate(data) {
-    console.log(data);
+  handleOk(): void {
+    console.log('Button ok clicked!');
+    this.isVisibleDetail = false;
+  }
+
+  handleCancel(): void {
+    console.log('Button cancel clicked!');
+    this.isVisibleDetail = false;
   }
 }

@@ -12,12 +12,11 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   NgModule,
 } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function configServiceFactory(config: AppConfigService) {
   return () => config.load();
 }
-
-
 
 @NgModule({
   declarations: [AppComponent, MainViewComponent],
@@ -28,6 +27,8 @@ export function configServiceFactory(config: AppConfigService) {
     FontAwesomeModule,
     SharedModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    BrowserModule
   ],
   providers: [
     AppConfigService,
