@@ -5,7 +5,11 @@ import { UrlConstant } from '../shared/constants/url.class';
 
 @Injectable()
 export class TicketService extends BaseService {
-  getAllTicket(): any {
-    return this.get(UrlConstant.WORKSPACE + '/getAllTicketOfAllWorkSpaces');
+  getAllTicketOfAllWS(): any {
+    return this.get(UrlConstant.TICKET + '/getAllTicketOfAllWorkSpaces');
+  }
+
+  getAllTicketByWS(id: String): any {
+    return this.get(UrlConstant.WORKSPACE + '/getAllTicketsOfOneWorkSpace' + '?id=' + id);
   }
 }

@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,700|Lato:400,800,900');
 @import '../node_modules/bulma/bulma.sass';
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";
 $family-sans-serif: "Nunito", sans-serif;
 
 // Update some of Bulma's component variables
@@ -17,6 +18,5 @@ body {
 html {
   background-image: url('./assets/background.svg');
   background-size: cover;
-
   overflow-y: auto !important;
 }

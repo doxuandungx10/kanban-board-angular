@@ -16,6 +16,7 @@ export class MainViewComponent implements OnInit {
   isEditing: boolean = false;
   curTaskId: number = 0;
   lstWorkSpace: any[] = [];
+  lstTicket: any[] = [];
   isVisibleDetail: boolean = false;
 
   constructor(
@@ -90,20 +91,22 @@ export class MainViewComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.getAllWorkspace();
+    this.getAllTicketByWS();
   }
 
-  getAllWorkspace() {
-    this.ticketService.getAllTicket().subscribe(
-      (res) => {
+  getAllTicketByWS() {
+    const id = '635a4342d33b9b9992200bd0';
+    this.ticketService.getAllTicketByWS(id).subscribe(
+      (res: any) => {
         if (res !== null) {
-          this.lstWorkSpace = res;
-          console.log('lstWorkSpace', this.lstWorkSpace);
+          this.lstTicket = res[0].tickets;
+          console.log('lstTicket', this.lstTicket);
         }
       },
       (error) => {}
     );
   }
+
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
